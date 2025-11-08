@@ -1,46 +1,10 @@
 import { BreakdownList, InsightGrid, SummaryCards, TimelineWidget } from "../components/analytics-widgets";
 import { DashboardLayout } from "../components/dashboard-layout";
-
-const metrics = [
-  { label: "アクティブメンバー", value: "11", trend: "+2" },
-  { label: "平均タスク数", value: "7.4", helper: "1 メンバーあたり" },
-  { label: "負荷偏差", value: "±1.8", trend: "-0.3" },
-  { label: "レスポンス中央値", value: "2.7h" },
-];
-
-const breakdown = [
-  { label: "Alice", value: 12, percent: 86, badge: "Infra 戦略" },
-  { label: "Bob", value: 9, percent: 65, badge: "Revamp" },
-  { label: "Charlie", value: 8, percent: 57, badge: "Ops" },
-  { label: "Dana", value: 5, percent: 38, badge: "Design QA" },
-];
-
-const timeline = [
-  { label: "Sprint 1", value: 24 },
-  { label: "Sprint 2", value: 28 },
-  { label: "Sprint 3", value: 22 },
-  { label: "Sprint 4", value: 31 },
-];
-
-const insights = [
-  {
-    title: "Load balancing",
-    body: "Alice への集中が続いているため、Charlie へ Ops タスクを再配分すると偏差が 0.7 低減します。",
-  },
-  {
-    title: "Response",
-    body: "レスポンスの遅いタスクはカスタマータグが 60%。トリアージテンプレを自動入力に切り替えると効果的です。",
-  },
-];
-
-const workloadTable = [
-  { member: "Alice", focus: "Platform", sla: "95%", overdue: "1" },
-  { member: "Bob", focus: "Experiments", sla: "88%", overdue: "2" },
-  { member: "Charlie", focus: "Ops", sla: "91%", overdue: "0" },
-  { member: "Dana", focus: "Design", sla: "90%", overdue: "1" },
-];
+import { getAssigneeAnalytics } from "../lib/analytics";
 
 export default function AsainnPage() {
+  const { metrics, breakdown, timeline, insights, workloadTable } = getAssigneeAnalytics();
+
   return (
     <DashboardLayout title="Asainn Analytics" subtitle="アサイン負荷と SLA 達成状況を可視化してチームを守ります。">
       <SummaryCards metrics={metrics} />

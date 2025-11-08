@@ -1,49 +1,10 @@
 import { BreakdownList, InsightGrid, SummaryCards, TimelineWidget } from "../components/analytics-widgets";
 import { DashboardLayout } from "../components/dashboard-layout";
-
-const metrics = [
-  { label: "アクティブタグ", value: "18", trend: "+14%" },
-  { label: "タグ付きタスク", value: "126", helper: "今週 +32" },
-  { label: "再利用率", value: "78%", trend: "+4%" },
-  { label: "ユニークタグ", value: "34", helper: "タクソノミー拡張中" },
-];
-
-const breakdown = [
-  { label: "Urgent", value: 42, percent: 82, badge: "+8 件 / 24h" },
-  { label: "Backend", value: 33, percent: 64, badge: "API チーム" },
-  { label: "Design", value: 21, percent: 41, badge: "UI レビュー" },
-  { label: "Ops", value: 17, percent: 34, badge: "SLO 見直し" },
-];
-
-const timeline = [
-  { label: "Mon", value: 9 },
-  { label: "Tue", value: 14 },
-  { label: "Wed", value: 18 },
-  { label: "Thu", value: 12 },
-  { label: "Fri", value: 20 },
-  { label: "Sat", value: 7 },
-  { label: "Sun", value: 6 },
-];
-
-const insights = [
-  {
-    title: "タグ粒度",
-    body: "1 タスクあたりの平均タグ数は 2.4。複数タグが付与されたタスクは完了速度が 18% 早い傾向です。",
-  },
-  {
-    title: "ガバナンス",
-    body: "命名規則違反のタグは 2 件のみ。アーカイブ候補のタグを整理するとボードがさらに読みやすくなります。",
-  },
-];
-
-const tagLeaders = [
-  { name: "Urgent", tasks: 42, median: "2.1h", adoption: "91%" },
-  { name: "UX Audit", tasks: 28, median: "5.4h", adoption: "64%" },
-  { name: "Release", tasks: 24, median: "3.2h", adoption: "58%" },
-  { name: "Customer", tasks: 19, median: "4.0h", adoption: "41%" },
-];
+import { getTagAnalytics } from "../lib/analytics";
 
 export default function TagsPage() {
+  const { metrics, breakdown, timeline, insights, tagLeaders } = getTagAnalytics();
+
   return (
     <DashboardLayout title="Tag Analytics" subtitle="タグの利用状況と負荷分散を可視化し、トリアージを高速化します。">
       <SummaryCards metrics={metrics} />
