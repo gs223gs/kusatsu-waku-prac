@@ -4,7 +4,7 @@ const primaryNav = [
   { label: 'Dashboard', href: '/' },
   { label: 'Tags', href: '/tags' },
   { label: 'Category', href: '/category' },
-  { label: 'Asainn', href: '/asainn' },
+  { label: 'Assignee', href: '/assignee' },
 ];
 
 const boardNav = [
