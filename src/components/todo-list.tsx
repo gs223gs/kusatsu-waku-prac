@@ -11,6 +11,9 @@ type TodoListProps = {
   onToggle: (id: number) => void;
   onRemove: (id: number) => void;
   onUpdate: (id: number, values: TodoDraft) => void;
+  assigneeOptions: string[];
+  categoryOptions: string[];
+  tagOptions: string[];
 };
 
 const priorityStyles: Record<TodoPriority, string> = {
@@ -19,7 +22,15 @@ const priorityStyles: Record<TodoPriority, string> = {
   high: 'border-rose-200 bg-rose-50 text-rose-700',
 };
 
-export function TodoList({ todos, onToggle, onRemove, onUpdate }: TodoListProps) {
+export function TodoList({
+  todos,
+  onToggle,
+  onRemove,
+  onUpdate,
+  assigneeOptions,
+  categoryOptions,
+  tagOptions,
+}: TodoListProps) {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [draft, setDraft] = useState<TodoDraft>(emptyTodoDraft);
 
@@ -83,6 +94,9 @@ export function TodoList({ todos, onToggle, onRemove, onUpdate }: TodoListProps)
                 submitLabel="Save changes"
                 onCancel={cancelEditing}
                 className="border-0 p-0 shadow-none"
+                assigneeOptions={assigneeOptions}
+                categoryOptions={categoryOptions}
+                tagOptions={tagOptions}
               />
             ) : (
               <div className="space-y-3">

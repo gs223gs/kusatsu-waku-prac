@@ -3,7 +3,6 @@
 import { FormEvent } from 'react';
 
 import type { TodoDraft, TodoPriority } from './todo-types';
-import { assigneeOptions, categoryOptions, tagOptions } from './todo-options';
 
 type TodoFormProps = {
   idPrefix?: string;
@@ -13,6 +12,9 @@ type TodoFormProps = {
   submitLabel?: string;
   onCancel?: () => void;
   className?: string;
+  assigneeOptions: string[];
+  categoryOptions: string[];
+  tagOptions: string[];
 };
 
 const priorityLabels: Record<TodoPriority, string> = {
@@ -29,6 +31,9 @@ export function TodoForm({
   submitLabel = 'Add task',
   onCancel,
   className = '',
+  assigneeOptions,
+  categoryOptions,
+  tagOptions,
 }: TodoFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

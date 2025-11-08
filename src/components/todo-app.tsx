@@ -4,11 +4,16 @@ import { useState } from 'react';
 
 import { TodoForm } from './todo-form';
 import { TodoList } from './todo-list';
+import { assigneeOptions as defaultAssignees, categoryOptions as defaultCategories, tagOptions as defaultTags } from './todo-options';
 import { Todo, TodoDraft, emptyTodoDraft } from './todo-types';
 
 export function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [draft, setDraft] = useState<TodoDraft>(emptyTodoDraft);
+  const [assigneeOptions] = useState(defaultAssignees);
+  const [categoryOptions] = useState(defaultCategories);
+  const [tagOptions, setTagOptions] = useState(defaultTags);
+  const [newTag, setNewTag] = useState('');
 
   const handleDraftChange = <Field extends keyof TodoDraft>(
     field: Field,
@@ -77,7 +82,44 @@ export function TodoApp() {
         values={draft}
         onChange={handleDraftChange}
         onSubmit={handleAddTodo}
+        assigneeOptions={assigneeOptions}
+        categoryOptions={categoryOptions}
+        tagOptions={tagOptions}
       />
+
+      <form
+        className="rounded-md border border-dashed border-gray-300 bg-white p-4 text-sm"
+        onSubmit={(event) => {
+          event.preventDefault();
+          const tagLabel = newTag.trim();
+          if (!tagLabel) return;
+          const exists = tagOptions.some(
+            (option) => option.toLowerCase() === tagLabel.toLowerCase(),
+          );
+          if (!exists) {
+            setTagOptions((current) => [...current, tagLabel]);
+          }
+          setNewTag('');
+        }}
+      >
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+          Add tag option
+        </p>
+        <div className="mt-2 flex gap-2">
+          <input
+            value={newTag}
+            onChange={(event) => setNewTag(event.target.value)}
+            placeholder="New tag label"
+            className="flex-1 rounded border border-gray-200 px-3 py-2 text-sm focus:border-black focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium"
+          >
+            Add
+          </button>
+        </div>
+      </form>
 
       <div className="space-y-3">
         <TodoList
@@ -85,6 +127,9 @@ export function TodoApp() {
           onToggle={handleToggle}
           onRemove={handleRemove}
           onUpdate={handleUpdate}
+          assigneeOptions={assigneeOptions}
+          categoryOptions={categoryOptions}
+          tagOptions={tagOptions}
         />
 
         <p className="text-xs text-gray-500">
