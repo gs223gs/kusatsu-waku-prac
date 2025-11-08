@@ -4,18 +4,34 @@ import { useState } from 'react';
 
 import { TodoForm } from './todo-form';
 import { TodoList } from './todo-list';
-import { Todo } from './todo-types';
+import { Todo, TodoDraft, emptyTodoDraft } from './todo-types';
 
 export function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [inputValue, setInputValue] = useState('');
+  const [draft, setDraft] = useState<TodoDraft>(emptyTodoDraft);
+
+  const handleDraftChange = <Field extends keyof TodoDraft>(
+    field: Field,
+    value: TodoDraft[Field],
+  ) => {
+    setDraft((current) => ({ ...current, [field]: value }));
+  };
 
   const handleAddTodo = () => {
-    const text = inputValue.trim();
+    const text = draft.text.trim();
     if (!text) return;
 
-    setTodos((current) => [{ id: Date.now(), text, done: false }, ...current]);
-    setInputValue('');
+    const newTodo: Todo = {
+      id: Date.now(),
+      text,
+      assignee: draft.assignee.trim(),
+      dueDate: draft.dueDate,
+      priority: draft.priority,
+      done: false,
+    };
+
+    setTodos((current) => [newTodo, ...current]);
+    setDraft(emptyTodoDraft);
   };
 
   const handleToggle = (id: number) => {
@@ -30,14 +46,40 @@ export function TodoApp() {
     setTodos((current) => current.filter((todo) => todo.id !== id));
   };
 
+  const handleUpdate = (id: number, values: TodoDraft) => {
+    setTodos((current) =>
+      current.map((todo) =>
+        todo.id === id
+          ? {
+              ...todo,
+              text: values.text.trim(),
+              assignee: values.assignee.trim(),
+              dueDate: values.dueDate,
+              priority: values.priority,
+            }
+          : todo,
+      ),
+    );
+  };
+
   const remainingCount = todos.filter((todo) => !todo.done).length;
 
   return (
     <section className="mt-6 max-w-md space-y-6">
-      <TodoForm value={inputValue} onChange={setInputValue} onSubmit={handleAddTodo} />
+      <TodoForm
+        idPrefix="new-todo"
+        values={draft}
+        onChange={handleDraftChange}
+        onSubmit={handleAddTodo}
+      />
 
       <div className="space-y-3">
-        <TodoList todos={todos} onToggle={handleToggle} onRemove={handleRemove} />
+        <TodoList
+          todos={todos}
+          onToggle={handleToggle}
+          onRemove={handleRemove}
+          onUpdate={handleUpdate}
+        />
 
         <p className="text-xs text-gray-500">
           {remainingCount} task{remainingCount === 1 ? '' : 's'} remaining
