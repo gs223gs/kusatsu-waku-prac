@@ -5,7 +5,7 @@ export type TodoDraft = {
   assignee: string;
   dueDate: string;
   priority: TodoPriority;
-  category: string;
+  categories: string[];
   tags: string[];
   memo: string;
 };
@@ -20,7 +20,7 @@ export const emptyTodoDraft: TodoDraft = {
   assignee: '',
   dueDate: '',
   priority: 'medium',
-  category: '',
+  categories: [],
   tags: [],
   memo: '',
 };

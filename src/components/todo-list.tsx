@@ -45,7 +45,7 @@ export function TodoList({
       assignee: todo.assignee,
       dueDate: todo.dueDate,
       priority: todo.priority,
-      category: todo.category,
+      categories: [...todo.categories],
       tags: [...todo.tags],
       memo: todo.memo,
     });
@@ -76,7 +76,7 @@ export function TodoList({
         const priorityClass = priorityStyles[todo.priority];
         const assigneeLabel = todo.assignee ? `Assigned to ${todo.assignee}` : 'Unassigned';
         const dueLabel = todo.dueDate ? `Due ${todo.dueDate}` : 'No due date';
-        const categoryLabel = todo.category ? `Category: ${todo.category}` : 'No category';
+        const categoryList = todo.categories;
         const tagList = todo.tags;
         const memoText = todo.memo.trim();
 
@@ -121,7 +121,20 @@ export function TodoList({
                       <p className="text-xs text-gray-500">
                         {assigneeLabel} · {dueLabel}
                       </p>
-                      <p className="text-xs text-gray-500">{categoryLabel}</p>
+                      {categoryList.length ? (
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {categoryList.map((category) => (
+                            <span
+                              key={category}
+                              className="rounded-full bg-blue-50 px-2 py-0.5 text-xs text-blue-700"
+                            >
+                              {category}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-gray-500">No categories</p>
+                      )}
                       {tagList.length ? (
                         <div className="mt-1 flex flex-wrap gap-1">
                           {tagList.map((tag) => (

@@ -58,16 +58,20 @@ export function TodoForm({
     onChange('assignee', values.assignee === option ? '' : option);
   };
 
-  const handleCategorySelect = (option: string) => {
-    onChange('category', values.category === option ? '' : option);
-  };
-
   const handleTagToggle = (tag: string) => {
     const isSelected = values.tags.includes(tag);
     const nextTags = isSelected
       ? values.tags.filter((current) => current !== tag)
       : [...values.tags, tag];
     onChange('tags', nextTags);
+  };
+
+  const handleCategoryToggle = (category: string) => {
+    const isSelected = values.categories.includes(category);
+    const nextCategories = isSelected
+      ? values.categories.filter((current) => current !== category)
+      : [...values.categories, category];
+    onChange('categories', nextCategories);
   };
 
   return (
@@ -148,11 +152,11 @@ export function TodoForm({
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-medium uppercase tracking-wide">Category</label>
-            {values.category ? (
+            <label className="text-xs font-medium uppercase tracking-wide">Categories</label>
+            {values.categories.length ? (
               <button
                 type="button"
-                onClick={() => onChange('category', '')}
+                onClick={() => onChange('categories', [])}
                 className="text-[10px] uppercase tracking-wide text-gray-400"
               >
                 Clear
@@ -160,16 +164,19 @@ export function TodoForm({
             ) : null}
           </div>
           <div className="flex flex-wrap gap-2">
-            {categoryOptions.map((option) => (
-              <button
-                type="button"
-                key={option}
-                onClick={() => handleCategorySelect(option)}
-                className={toggleButtonClass(values.category === option)}
-              >
-                {option}
-              </button>
-            ))}
+            {categoryOptions.map((option) => {
+              const isSelected = values.categories.includes(option);
+              return (
+                <button
+                  type="button"
+                  key={option}
+                  onClick={() => handleCategoryToggle(option)}
+                  className={toggleButtonClass(isSelected)}
+                >
+                  {option}
+                </button>
+              );
+            })}
           </div>
         </div>
 
