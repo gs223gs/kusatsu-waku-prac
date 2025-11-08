@@ -14,11 +14,12 @@ import { Todo, TodoDraft, emptyTodoDraft } from './todo-types';
 export function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [draft, setDraft] = useState<TodoDraft>(emptyTodoDraft);
-  const [assigneeOptions] = useState(defaultAssignees);
+  const [assigneeOptions, setAssigneeOptions] = useState(defaultAssignees);
   const [categoryOptions, setCategoryOptions] = useState(defaultCategories);
   const [tagOptions, setTagOptions] = useState(defaultTags);
   const [newTag, setNewTag] = useState('');
   const [newCategory, setNewCategory] = useState('');
+  const [newAssignee, setNewAssignee] = useState('');
 
   const handleDraftChange = <Field extends keyof TodoDraft>(
     field: Field,
@@ -34,7 +35,7 @@ export function TodoApp() {
     const newTodo: Todo = {
       id: Date.now(),
       text,
-      assignee: draft.assignee.trim(),
+      assignees: [...draft.assignees],
       dueDate: draft.dueDate,
       priority: draft.priority,
       categories: [...draft.categories],
@@ -66,7 +67,7 @@ export function TodoApp() {
           ? {
               ...todo,
               text: values.text.trim(),
-              assignee: values.assignee.trim(),
+              assignees: [...values.assignees],
               dueDate: values.dueDate,
               priority: values.priority,
               categories: [...values.categories],
@@ -150,6 +151,40 @@ export function TodoApp() {
               value={newCategory}
               onChange={(event) => setNewCategory(event.target.value)}
               placeholder="新しいカテゴリ名"
+              className="flex-1 rounded border border-gray-200 px-3 py-2 text-sm focus:border-black focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium"
+            >
+              追加
+            </button>
+          </div>
+        </form>
+
+        <form
+          className="rounded-md border border-dashed border-gray-300 bg-white p-4 text-sm"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const assigneeLabel = newAssignee.trim();
+            if (!assigneeLabel) return;
+            const exists = assigneeOptions.some(
+              (option) => option.toLowerCase() === assigneeLabel.toLowerCase(),
+            );
+            if (!exists) {
+              setAssigneeOptions((current) => [...current, assigneeLabel]);
+            }
+            setNewAssignee('');
+          }}
+        >
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+            アサイン候補の追加
+          </p>
+          <div className="mt-2 flex gap-2">
+            <input
+              value={newAssignee}
+              onChange={(event) => setNewAssignee(event.target.value)}
+              placeholder="新しいメンバー名"
               className="flex-1 rounded border border-gray-200 px-3 py-2 text-sm focus:border-black focus:outline-none"
             />
             <button

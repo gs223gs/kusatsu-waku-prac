@@ -54,8 +54,12 @@ export function TodoForm({
         : 'border-gray-200 text-gray-600 hover:border-gray-400'
     }`;
 
-  const handleAssigneeSelect = (option: string) => {
-    onChange('assignee', values.assignee === option ? '' : option);
+  const handleAssigneeToggle = (assignee: string) => {
+    const isSelected = values.assignees.includes(assignee);
+    const nextAssignees = isSelected
+      ? values.assignees.filter((current) => current !== assignee)
+      : [...values.assignees, assignee];
+    onChange('assignees', nextAssignees);
   };
 
   const handleTagToggle = (tag: string) => {
@@ -92,11 +96,11 @@ export function TodoForm({
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-medium uppercase tracking-wide">Assignee</label>
-            {values.assignee ? (
+            <label className="text-xs font-medium uppercase tracking-wide">Assignees</label>
+            {values.assignees.length ? (
               <button
                 type="button"
-                onClick={() => onChange('assignee', '')}
+                onClick={() => onChange('assignees', [])}
                 className="text-[10px] uppercase tracking-wide text-gray-400"
               >
                 Clear
@@ -104,16 +108,19 @@ export function TodoForm({
             ) : null}
           </div>
           <div className="flex flex-wrap gap-2">
-            {assigneeOptions.map((option) => (
-              <button
-                type="button"
-                key={option}
-                onClick={() => handleAssigneeSelect(option)}
-                className={toggleButtonClass(values.assignee === option)}
-              >
-                {option}
-              </button>
-            ))}
+            {assigneeOptions.map((option) => {
+              const isSelected = values.assignees.includes(option);
+              return (
+                <button
+                  type="button"
+                  key={option}
+                  onClick={() => handleAssigneeToggle(option)}
+                  className={toggleButtonClass(isSelected)}
+                >
+                  {option}
+                </button>
+              );
+            })}
           </div>
         </div>
 

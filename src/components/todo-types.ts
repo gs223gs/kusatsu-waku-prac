@@ -2,7 +2,7 @@ export type TodoPriority = 'low' | 'medium' | 'high';
 
 export type TodoDraft = {
   text: string;
-  assignee: string;
+  assignees: string[];
   dueDate: string;
   priority: TodoPriority;
   categories: string[];
@@ -17,7 +17,7 @@ export type Todo = TodoDraft & {
 
 export const emptyTodoDraft: TodoDraft = {
   text: '',
-  assignee: '',
+  assignees: [],
   dueDate: '',
   priority: 'medium',
   categories: [],

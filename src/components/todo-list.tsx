@@ -42,7 +42,7 @@ export function TodoList({
     setEditingId(todo.id);
     setDraft({
       text: todo.text,
-      assignee: todo.assignee,
+      assignees: [...todo.assignees],
       dueDate: todo.dueDate,
       priority: todo.priority,
       categories: [...todo.categories],
@@ -74,7 +74,7 @@ export function TodoList({
       {todos.map((todo) => {
         const isEditing = editingId === todo.id;
         const priorityClass = priorityStyles[todo.priority];
-        const assigneeLabel = todo.assignee ? `Assigned to ${todo.assignee}` : 'Unassigned';
+        const assigneeList = todo.assignees;
         const dueLabel = todo.dueDate ? `Due ${todo.dueDate}` : 'No due date';
         const categoryList = todo.categories;
         const tagList = todo.tags;
@@ -118,9 +118,21 @@ export function TodoList({
                       <p className={todo.done ? 'text-gray-400 line-through' : 'text-gray-900'}>
                         {todo.text}
                       </p>
-                      <p className="text-xs text-gray-500">
-                        {assigneeLabel} · {dueLabel}
-                      </p>
+                      {assigneeList.length ? (
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {assigneeList.map((assignee) => (
+                            <span
+                              key={assignee}
+                              className="rounded-full bg-purple-50 px-2 py-0.5 text-xs text-purple-700"
+                            >
+                              {assignee}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-gray-500">Unassigned</p>
+                      )}
+                      <p className="text-xs text-gray-500">{dueLabel}</p>
                       {categoryList.length ? (
                         <div className="mt-1 flex flex-wrap gap-1">
                           {categoryList.map((category) => (
