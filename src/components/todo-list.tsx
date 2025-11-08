@@ -11,7 +11,7 @@ type TodoListProps = {
   onToggle: (id: number) => void;
   onRemove: (id: number) => void;
   onUpdate: (id: number, values: TodoDraft) => void;
-  assigneeOptions: string[];
+  assignOptions: string[];
   categoryOptions: string[];
   tagOptions: string[];
 };
@@ -27,7 +27,7 @@ export function TodoList({
   onToggle,
   onRemove,
   onUpdate,
-  assigneeOptions,
+  assignOptions,
   categoryOptions,
   tagOptions,
 }: TodoListProps) {
@@ -42,7 +42,7 @@ export function TodoList({
     setEditingId(todo.id);
     setDraft({
       text: todo.text,
-      assignees: [...todo.assignees],
+      assigns: [...todo.assigns],
       dueDate: todo.dueDate,
       priority: todo.priority,
       categories: [...todo.categories],
@@ -74,7 +74,7 @@ export function TodoList({
       {todos.map((todo) => {
         const isEditing = editingId === todo.id;
         const priorityClass = priorityStyles[todo.priority];
-        const assigneeList = todo.assignees;
+        const assignList = todo.assigns;
         const dueLabel = todo.dueDate ? `Due ${todo.dueDate}` : 'No due date';
         const categoryList = todo.categories;
         const tagList = todo.tags;
@@ -94,7 +94,7 @@ export function TodoList({
                 submitLabel="Save changes"
                 onCancel={cancelEditing}
                 className="border-0 p-0 shadow-none"
-                assigneeOptions={assigneeOptions}
+                assignOptions={assignOptions}
                 categoryOptions={categoryOptions}
                 tagOptions={tagOptions}
               />
@@ -118,14 +118,14 @@ export function TodoList({
                       <p className={todo.done ? 'text-gray-400 line-through' : 'text-gray-900'}>
                         {todo.text}
                       </p>
-                      {assigneeList.length ? (
+                      {assignList.length ? (
                         <div className="mt-1 flex flex-wrap gap-1">
-                          {assigneeList.map((assignee) => (
+                          {assignList.map((assign) => (
                             <span
-                              key={assignee}
+                              key={assign}
                               className="rounded-full bg-purple-50 px-2 py-0.5 text-xs text-purple-700"
                             >
-                              {assignee}
+                              {assign}
                             </span>
                           ))}
                         </div>

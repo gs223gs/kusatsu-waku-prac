@@ -2,19 +2,19 @@
 
 import { FormEvent } from 'react';
 
-type AssigneeOptionFormProps = {
+type assignOptionFormProps = {
   value: string;
   options: string[];
   onChange: (value: string) => void;
   onAdd: (label: string) => void;
 };
 
-export function AssigneeOptionForm({
+export function AssignOptionForm({
   value,
   options,
   onChange,
   onAdd,
-}: AssigneeOptionFormProps) {
+}: assignOptionFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const label = value.trim();

@@ -12,7 +12,7 @@ type TodoFormProps = {
   submitLabel?: string;
   onCancel?: () => void;
   className?: string;
-  assigneeOptions: string[];
+  assignOptions: string[];
   categoryOptions: string[];
   tagOptions: string[];
 };
@@ -31,7 +31,7 @@ export function TodoForm({
   submitLabel = 'Add task',
   onCancel,
   className = '',
-  assigneeOptions,
+  assignOptions,
   categoryOptions,
   tagOptions,
 }: TodoFormProps) {
@@ -54,12 +54,12 @@ export function TodoForm({
         : 'border-gray-200 text-gray-600 hover:border-gray-400'
     }`;
 
-  const handleAssigneeToggle = (assignee: string) => {
-    const isSelected = values.assignees.includes(assignee);
-    const nextAssignees = isSelected
-      ? values.assignees.filter((current) => current !== assignee)
-      : [...values.assignees, assignee];
-    onChange('assignees', nextAssignees);
+  const handleassignToggle = (assign: string) => {
+    const isSelected = values.assigns.includes(assign);
+    const nextassigns = isSelected
+      ? values.assigns.filter((current) => current !== assign)
+      : [...values.assigns, assign];
+    onChange('assigns', nextassigns);
   };
 
   const handleTagToggle = (tag: string) => {
@@ -96,11 +96,11 @@ export function TodoForm({
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-medium uppercase tracking-wide">Assignees</label>
-            {values.assignees.length ? (
+            <label className="text-xs font-medium uppercase tracking-wide">assigns</label>
+            {values.assigns.length ? (
               <button
                 type="button"
-                onClick={() => onChange('assignees', [])}
+                onClick={() => onChange('assigns', [])}
                 className="text-[10px] uppercase tracking-wide text-gray-400"
               >
                 Clear
@@ -108,13 +108,13 @@ export function TodoForm({
             ) : null}
           </div>
           <div className="flex flex-wrap gap-2">
-            {assigneeOptions.map((option) => {
-              const isSelected = values.assignees.includes(option);
+            {assignOptions.map((option) => {
+              const isSelected = values.assigns.includes(option);
               return (
                 <button
                   type="button"
                   key={option}
-                  onClick={() => handleAssigneeToggle(option)}
+                  onClick={() => handleassignToggle(option)}
                   className={toggleButtonClass(isSelected)}
                 >
                   {option}

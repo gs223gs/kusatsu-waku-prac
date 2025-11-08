@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 
-import { AssigneeOptionForm } from './assignee-option-form';
+import { AssignOptionForm } from './assignee-option-form'; 
 import { CategoryOptionForm } from './category-option-form';
 import { TagOptionForm } from './tag-option-form';
 import { TodoForm } from './todo-form';
 import { TodoList } from './todo-list';
 import {
-  assigneeOptions as defaultAssignees,
+  assignOptions as defaultassigns,
   categoryOptions as defaultCategories,
   tagOptions as defaultTags,
 } from './todo-options';
@@ -17,12 +17,12 @@ import { Todo, TodoDraft, emptyTodoDraft } from './todo-types';
 export function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [draft, setDraft] = useState<TodoDraft>(emptyTodoDraft);
-  const [assigneeOptions, setAssigneeOptions] = useState(defaultAssignees);
+  const [assignOptions, setassignOptions] = useState(defaultassigns);
   const [categoryOptions, setCategoryOptions] = useState(defaultCategories);
   const [tagOptions, setTagOptions] = useState(defaultTags);
   const [newTag, setNewTag] = useState('');
   const [newCategory, setNewCategory] = useState('');
-  const [newAssignee, setNewAssignee] = useState('');
+  const [newassign, setNewassign] = useState('');
 
   const handleDraftChange = <Field extends keyof TodoDraft>(
     field: Field,
@@ -38,7 +38,7 @@ export function TodoApp() {
     const newTodo: Todo = {
       id: Date.now(),
       text,
-      assignees: [...draft.assignees],
+      assigns: [...draft.assigns],
       dueDate: draft.dueDate,
       priority: draft.priority,
       categories: [...draft.categories],
@@ -70,7 +70,7 @@ export function TodoApp() {
           ? {
               ...todo,
               text: values.text.trim(),
-              assignees: [...values.assignees],
+              assigns: [...values.assigns],
               dueDate: values.dueDate,
               priority: values.priority,
               categories: [...values.categories],
@@ -91,7 +91,7 @@ export function TodoApp() {
     { label: '完了済み', value: completedCount },
     { label: 'カテゴリ', value: categoryOptions.length },
     { label: 'タグ', value: tagOptions.length },
-    { label: 'メンバー', value: assigneeOptions.length },
+    { label: 'メンバー', value: assignOptions.length },
   ];
 
   const priorityBreakdown = ['high', 'medium', 'low'].map((priority) => ({
@@ -112,8 +112,8 @@ export function TodoApp() {
     setCategoryOptions((current) => [...current, label]);
   };
 
-  const handleAddAssigneeOption = (label: string) => {
-    setAssigneeOptions((current) => [...current, label]);
+  const handleAddassignOption = (label: string) => {
+    setassignOptions((current) => [...current, label]);
   };
 
   return (
@@ -142,7 +142,7 @@ export function TodoApp() {
               values={draft}
               onChange={handleDraftChange}
               onSubmit={handleAddTodo}
-              assigneeOptions={assigneeOptions}
+              assignOptions={assignOptions}
               categoryOptions={categoryOptions}
               tagOptions={tagOptions}
             />
@@ -162,7 +162,7 @@ export function TodoApp() {
                 onToggle={handleToggle}
                 onRemove={handleRemove}
                 onUpdate={handleUpdate}
-                assigneeOptions={assigneeOptions}
+                assignOptions={assignOptions}
                 categoryOptions={categoryOptions}
                 tagOptions={tagOptions}
               />
@@ -217,11 +217,11 @@ export function TodoApp() {
               onAdd={handleAddCategoryOption}
             />
 
-            <AssigneeOptionForm
-              value={newAssignee}
-              options={assigneeOptions}
-              onChange={setNewAssignee}
-              onAdd={handleAddAssigneeOption}
+            <AssignOptionForm
+              value={newassign}
+              options={assignOptions}
+              onChange={setNewassign}
+              onAdd={handleAddassignOption}
             />
           </div>
         </div>

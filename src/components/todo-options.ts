@@ -1,4 +1,4 @@
-export const assigneeOptions = ['Terry'];
+export const assignOptions = ['Terry'];
 
 export const categoryOptions = ['React Tokyo'];
 

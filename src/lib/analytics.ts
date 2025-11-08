@@ -155,24 +155,24 @@ export function getCategoryAnalytics() {
   };
 }
 
-export function getAssigneeAnalytics() {
-  const assigneeMap = new Map<string, AnalyticsTask[]>();
+export function getassignAnalytics() {
+  const assignMap = new Map<string, AnalyticsTask[]>();
   analyticsTasks.forEach((task) => {
-    task.assignees.forEach((assignee) => {
-      const list = assigneeMap.get(assignee) ?? [];
+    task.assigns.forEach((assign) => {
+      const list = assignMap.get(assign) ?? [];
       list.push(task);
-      assigneeMap.set(assignee, list);
+      assignMap.set(assign, list);
     });
   });
 
-  const uniqueAssignees = assigneeMap.size;
-  const avgTasks = analyticsTasks.length / Math.max(uniqueAssignees, 1);
+  const uniqueassigns = assignMap.size;
+  const avgTasks = analyticsTasks.length / Math.max(uniqueassigns, 1);
   const variance =
-    [...assigneeMap.values()].reduce((sum, tasks) => sum + Math.pow(tasks.length - avgTasks, 2), 0) /
-    Math.max(uniqueAssignees, 1);
+    [...assignMap.values()].reduce((sum, tasks) => sum + Math.pow(tasks.length - avgTasks, 2), 0) /
+    Math.max(uniqueassigns, 1);
 
   const metrics = [
-    { label: 'アクティブメンバー', value: String(uniqueAssignees), trend: `+${Math.max(uniqueAssignees - 8, 0)}` },
+    { label: 'アクティブメンバー', value: String(uniqueassigns), trend: `+${Math.max(uniqueassigns - 8, 0)}` },
     { label: '平均タスク数', value: avgTasks.toFixed(1), helper: '1 メンバーあたり' },
     { label: '負荷偏差', value: `±${Math.sqrt(variance).toFixed(1)}`, trend: '-0.3' },
     {
@@ -181,7 +181,7 @@ export function getAssigneeAnalytics() {
     },
   ];
 
-  const breakdown = [...assigneeMap.entries()]
+  const breakdown = [...assignMap.entries()]
     .map(([name, tasks]) => ({
       label: name,
       value: tasks.length,
@@ -207,7 +207,7 @@ export function getAssigneeAnalytics() {
     },
   ];
 
-  const workloadTable = [...assigneeMap.entries()].map(([member, tasks]) => {
+  const workloadTable = [...assignMap.entries()].map(([member, tasks]) => {
     const overdue = tasks.filter((task) => task.status === 'open' && new Date(task.dueDate) < new Date('2025-02-04')).length;
     const sla = formatPercent(((tasks.length - overdue) / Math.max(tasks.length, 1)) * 100);
     const focus = tasks[0]?.categories[0] ?? 'General';

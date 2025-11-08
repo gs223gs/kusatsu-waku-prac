@@ -1,9 +1,9 @@
 import { BreakdownList, InsightGrid, SummaryCards, TimelineWidget } from "../components/analytics-widgets";
 import { DashboardLayout } from "../components/dashboard-layout";
-import { getAssigneeAnalytics } from "../lib/analytics";
+import { getassignAnalytics } from "../lib/analytics";
 
 export default function AsainnPage() {
-  const { metrics, breakdown, timeline, insights, workloadTable } = getAssigneeAnalytics();
+  const { metrics, breakdown, timeline, insights, workloadTable } = getassignAnalytics();
 
   return (
     <DashboardLayout title="Asainn Analytics" subtitle="アサイン負荷と SLA 達成状況を可視化してチームを守ります。">
