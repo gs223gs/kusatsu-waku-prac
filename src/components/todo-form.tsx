@@ -3,6 +3,7 @@
 import { FormEvent } from 'react';
 
 import type { TodoDraft, TodoPriority } from './todo-types';
+import { assigneeOptions, categoryOptions, tagOptions } from './todo-options';
 
 type TodoFormProps = {
   idPrefix?: string;
@@ -41,6 +42,29 @@ export function TodoForm({
   const inputClasses =
     'w-full rounded border border-gray-200 px-3 py-2 text-sm focus:border-black focus:outline-none';
 
+  const toggleButtonClass = (active: boolean) =>
+    `rounded-full border px-3 py-1 text-xs font-medium transition ${
+      active
+        ? 'border-black bg-black text-white'
+        : 'border-gray-200 text-gray-600 hover:border-gray-400'
+    }`;
+
+  const handleAssigneeSelect = (option: string) => {
+    onChange('assignee', values.assignee === option ? '' : option);
+  };
+
+  const handleCategorySelect = (option: string) => {
+    onChange('category', values.category === option ? '' : option);
+  };
+
+  const handleTagToggle = (tag: string) => {
+    const isSelected = values.tags.includes(tag);
+    const nextTags = isSelected
+      ? values.tags.filter((current) => current !== tag)
+      : [...values.tags, tag];
+    onChange('tags', nextTags);
+  };
+
   return (
     <form onSubmit={handleSubmit} className={formClassName}>
       <div className="flex flex-col gap-1">
@@ -57,17 +81,31 @@ export function TodoForm({
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium uppercase tracking-wide" htmlFor={`${idPrefix}-assignee`}>
-            Assignee
-          </label>
-          <input
-            id={`${idPrefix}-assignee`}
-            value={values.assignee}
-            onChange={(event) => onChange('assignee', event.target.value)}
-            placeholder="Name (optional)"
-            className={inputClasses}
-          />
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-medium uppercase tracking-wide">Assignee</label>
+            {values.assignee ? (
+              <button
+                type="button"
+                onClick={() => onChange('assignee', '')}
+                className="text-[10px] uppercase tracking-wide text-gray-400"
+              >
+                Clear
+              </button>
+            ) : null}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {assigneeOptions.map((option) => (
+              <button
+                type="button"
+                key={option}
+                onClick={() => handleAssigneeSelect(option)}
+                className={toggleButtonClass(values.assignee === option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="flex flex-col gap-1">
@@ -100,6 +138,78 @@ export function TodoForm({
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-medium uppercase tracking-wide">Category</label>
+            {values.category ? (
+              <button
+                type="button"
+                onClick={() => onChange('category', '')}
+                className="text-[10px] uppercase tracking-wide text-gray-400"
+              >
+                Clear
+              </button>
+            ) : null}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {categoryOptions.map((option) => (
+              <button
+                type="button"
+                key={option}
+                onClick={() => handleCategorySelect(option)}
+                className={toggleButtonClass(values.category === option)}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-medium uppercase tracking-wide">Tags</label>
+            {values.tags.length ? (
+              <button
+                type="button"
+                onClick={() => onChange('tags', [])}
+                className="text-[10px] uppercase tracking-wide text-gray-400"
+              >
+                Clear
+              </button>
+            ) : null}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {tagOptions.map((tag) => {
+              const isSelected = values.tags.includes(tag);
+              return (
+                <button
+                  type="button"
+                  key={tag}
+                  onClick={() => handleTagToggle(tag)}
+                  className={toggleButtonClass(isSelected)}
+                >
+                  {tag}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-xs font-medium uppercase tracking-wide" htmlFor={`${idPrefix}-memo`}>
+          Memo
+        </label>
+        <textarea
+          id={`${idPrefix}-memo`}
+          value={values.memo}
+          onChange={(event) => onChange('memo', event.target.value)}
+          placeholder="Additional context"
+          className={`${inputClasses} min-h-24`}
+        />
       </div>
 
       <div className="flex justify-end gap-2">

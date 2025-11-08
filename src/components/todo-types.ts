@@ -5,6 +5,9 @@ export type TodoDraft = {
   assignee: string;
   dueDate: string;
   priority: TodoPriority;
+  category: string;
+  tags: string[];
+  memo: string;
 };
 
 export type Todo = TodoDraft & {
@@ -17,4 +20,7 @@ export const emptyTodoDraft: TodoDraft = {
   assignee: '',
   dueDate: '',
   priority: 'medium',
+  category: '',
+  tags: [],
+  memo: '',
 };

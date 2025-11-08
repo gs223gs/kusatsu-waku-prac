@@ -34,6 +34,9 @@ export function TodoList({ todos, onToggle, onRemove, onUpdate }: TodoListProps)
       assignee: todo.assignee,
       dueDate: todo.dueDate,
       priority: todo.priority,
+      category: todo.category,
+      tags: [...todo.tags],
+      memo: todo.memo,
     });
   };
 
@@ -62,6 +65,9 @@ export function TodoList({ todos, onToggle, onRemove, onUpdate }: TodoListProps)
         const priorityClass = priorityStyles[todo.priority];
         const assigneeLabel = todo.assignee ? `Assigned to ${todo.assignee}` : 'Unassigned';
         const dueLabel = todo.dueDate ? `Due ${todo.dueDate}` : 'No due date';
+        const categoryLabel = todo.category ? `Category: ${todo.category}` : 'No category';
+        const tagList = todo.tags;
+        const memoText = todo.memo.trim();
 
         return (
           <li
@@ -101,6 +107,24 @@ export function TodoList({ todos, onToggle, onRemove, onUpdate }: TodoListProps)
                       <p className="text-xs text-gray-500">
                         {assigneeLabel} · {dueLabel}
                       </p>
+                      <p className="text-xs text-gray-500">{categoryLabel}</p>
+                      {tagList.length ? (
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {tagList.map((tag) => (
+                            <span
+                              key={tag}
+                              className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+                      {memoText ? (
+                        <p className="mt-2 rounded-md bg-gray-50 p-2 text-xs text-gray-600">
+                          {memoText}
+                        </p>
+                      ) : null}
                     </div>
                   </button>
 

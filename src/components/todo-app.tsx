@@ -27,6 +27,9 @@ export function TodoApp() {
       assignee: draft.assignee.trim(),
       dueDate: draft.dueDate,
       priority: draft.priority,
+      category: draft.category.trim(),
+      tags: [...draft.tags],
+      memo: draft.memo.trim(),
       done: false,
     };
 
@@ -56,6 +59,9 @@ export function TodoApp() {
               assignee: values.assignee.trim(),
               dueDate: values.dueDate,
               priority: values.priority,
+              category: values.category.trim(),
+              tags: [...values.tags],
+              memo: values.memo.trim(),
             }
           : todo,
       ),
