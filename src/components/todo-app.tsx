@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 
+import { AssigneeOptionForm } from './assignee-option-form';
+import { CategoryOptionForm } from './category-option-form';
+import { TagOptionForm } from './tag-option-form';
 import { TodoForm } from './todo-form';
 import { TodoList } from './todo-list';
 import {
@@ -81,6 +84,18 @@ export function TodoApp() {
 
   const remainingCount = todos.filter((todo) => !todo.done).length;
 
+  const handleAddTagOption = (label: string) => {
+    setTagOptions((current) => [...current, label]);
+  };
+
+  const handleAddCategoryOption = (label: string) => {
+    setCategoryOptions((current) => [...current, label]);
+  };
+
+  const handleAddAssigneeOption = (label: string) => {
+    setAssigneeOptions((current) => [...current, label]);
+  };
+
   return (
     <section className="mt-6 max-w-md space-y-6">
       <TodoForm
@@ -94,107 +109,26 @@ export function TodoApp() {
       />
 
       <div className="space-y-4">
-        <form
-          className="rounded-md border border-dashed border-gray-300 bg-white p-4 text-sm"
-          onSubmit={(event) => {
-            event.preventDefault();
-            const tagLabel = newTag.trim();
-            if (!tagLabel) return;
-            const exists = tagOptions.some(
-              (option) => option.toLowerCase() === tagLabel.toLowerCase(),
-            );
-            if (!exists) {
-              setTagOptions((current) => [...current, tagLabel]);
-            }
-            setNewTag('');
-          }}
-        >
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-            タグ候補の追加
-          </p>
-          <div className="mt-2 flex gap-2">
-            <input
-              value={newTag}
-              onChange={(event) => setNewTag(event.target.value)}
-              placeholder="新しいタグ名"
-              className="flex-1 rounded border border-gray-200 px-3 py-2 text-sm focus:border-black focus:outline-none"
-            />
-            <button
-              type="submit"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium"
-            >
-              追加
-            </button>
-          </div>
-        </form>
+        <TagOptionForm
+          value={newTag}
+          options={tagOptions}
+          onChange={setNewTag}
+          onAdd={handleAddTagOption}
+        />
 
-        <form
-          className="rounded-md border border-dashed border-gray-300 bg-white p-4 text-sm"
-          onSubmit={(event) => {
-            event.preventDefault();
-            const categoryLabel = newCategory.trim();
-            if (!categoryLabel) return;
-            const exists = categoryOptions.some(
-              (option) => option.toLowerCase() === categoryLabel.toLowerCase(),
-            );
-            if (!exists) {
-              setCategoryOptions((current) => [...current, categoryLabel]);
-            }
-            setNewCategory('');
-          }}
-        >
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-            カテゴリ候補の追加
-          </p>
-          <div className="mt-2 flex gap-2">
-            <input
-              value={newCategory}
-              onChange={(event) => setNewCategory(event.target.value)}
-              placeholder="新しいカテゴリ名"
-              className="flex-1 rounded border border-gray-200 px-3 py-2 text-sm focus:border-black focus:outline-none"
-            />
-            <button
-              type="submit"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium"
-            >
-              追加
-            </button>
-          </div>
-        </form>
+        <CategoryOptionForm
+          value={newCategory}
+          options={categoryOptions}
+          onChange={setNewCategory}
+          onAdd={handleAddCategoryOption}
+        />
 
-        <form
-          className="rounded-md border border-dashed border-gray-300 bg-white p-4 text-sm"
-          onSubmit={(event) => {
-            event.preventDefault();
-            const assigneeLabel = newAssignee.trim();
-            if (!assigneeLabel) return;
-            const exists = assigneeOptions.some(
-              (option) => option.toLowerCase() === assigneeLabel.toLowerCase(),
-            );
-            if (!exists) {
-              setAssigneeOptions((current) => [...current, assigneeLabel]);
-            }
-            setNewAssignee('');
-          }}
-        >
-          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-            アサイン候補の追加
-          </p>
-          <div className="mt-2 flex gap-2">
-            <input
-              value={newAssignee}
-              onChange={(event) => setNewAssignee(event.target.value)}
-              placeholder="新しいメンバー名"
-              className="flex-1 rounded border border-gray-200 px-3 py-2 text-sm focus:border-black focus:outline-none"
-            />
-            <button
-              type="submit"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium"
-            >
-              追加
-            </button>
-          </div>
-        </form>
+        <AssigneeOptionForm
+          value={newAssignee}
+          options={assigneeOptions}
+          onChange={setNewAssignee}
+          onAdd={handleAddAssigneeOption}
+        />
       </div>
 
       <div className="space-y-3">
