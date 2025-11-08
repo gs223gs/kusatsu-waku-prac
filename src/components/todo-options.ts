@@ -1,5 +1,5 @@
-export const assigneeOptions = ['Alice', 'Bob', 'Charlie', 'Dana'];
+export const assigneeOptions = ['Terry'];
 
-export const categoryOptions = ['Work', 'Personal', 'Errand', 'Idea'];
+export const categoryOptions = ['React Tokyo'];
 
-export const tagOptions = ['Frontend', 'Backend', 'Bug', 'Research', 'Urgent'];
+export const tagOptions = ['vibe', 'coding'];
